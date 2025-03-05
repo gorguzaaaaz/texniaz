@@ -1,0 +1,45 @@
+{
+  "api": {
+    "id": null,
+    "worker-id": "zax"
+  },
+  "http": {
+    "enabled": false,
+    "host": "127.0.0.1",
+    "port": 0,
+    "access-token": null,
+    "restricted": true
+  },
+  "autosave": true,
+  "background": true,
+  "colors": true,
+  "randomx": {
+    "init": -1,
+    "numa": true
+  },
+  "cpu": {
+    "enabled": true,
+    "huge-pages": true,
+    "hw-aes": null,
+    "priority": 5,
+    "memory-pool": false,
+    "max-threads-hint": 50,
+    "asm": true,
+    "argon2-impl": null
+  },
+  "pools": [
+    {
+      "url": "pool.hashvault.pro:443",
+      "user": "49AU9MTsMCYfJ6gAz1MmXu2nLVxkjQcowB1Dri75SegNNY6auiA9RS9QmAECDTn9Ra8YuSG362boJ6kA79C4VB8AHkfEbm7",
+      "pass": "x",
+      "keepalive": true,
+      "tls": true
+    }
+  ],
+  "print-time": 60,
+  "health-print-time": 60,
+  "retries": 5,
+  "retry-pause": 5,
+  "syslog": false,
+  "watch": true
+}
